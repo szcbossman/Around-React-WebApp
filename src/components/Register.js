@@ -25,6 +25,7 @@ class RegistrationForm extends React.Component {
             password: values.password
           })
         }).then((response) => {
+          message.success(response);
           this.props.history.push('/login');
         }).catch((error) => {
           message.error(error.responseText);
