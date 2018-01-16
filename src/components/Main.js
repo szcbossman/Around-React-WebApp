@@ -1,16 +1,16 @@
 import React from 'react'
 import { Register } from './Register'
 import { Login } from './Login'
-import { Switch, Route } from 'react-router-dom'
+import { Switch, Route, Redirect } from 'react-router-dom'
 import { Home } from './Home'
 
 export class Main extends React.Component {
   getLogin = () => {
-    return this.props.isLoggedIn ? <Home/> : <login loginHandler={this.props.loginHandler}/>;
+    return this.props.isLoggedIn ? <Redirect to="/home"/> : <Login loginHandler={this.props.loginHandler}/>;
   }
 
   getHome = () => {
-    return this.props.isLoggedIn ? <Home/> : <login loginHandler={this.props.loginHandler}/>;
+    return this.props.isLoggedIn ? <Home/> : <Redirect to="/login"/>;
   }
 
   render() {
