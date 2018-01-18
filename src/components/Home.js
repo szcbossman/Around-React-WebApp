@@ -6,7 +6,12 @@ const TabPane = Tabs.TabPane;
 const operations = <Button>Extra Action</Button>;
 
 export class Home extends React.Component {
+  state = {
+    loadingGeoLocation : false,
+  }
+
   componentDidMount() {
+    this.setState({ loadingGeoLocation: true });
     this.getGeoLocation();
   }
   componenctWillUnmount() {
@@ -26,16 +31,22 @@ export class Home extends React.Component {
   }
 
   onSuccessLoadGeoLocation = (position) => {
-    console.log(position);
+    this.setState({ loadingGeoLocation: false });
   }
   onFailedLoadGeoLocation = () => {
+    this.setState({ loadingGeoLocation: false });
+  }
 
+  getGalleryPanelContent = () => {
+    return this.state.loadingGeoLocation ? <span>loading geoLocation...</span> : null;
   }
 
   render() {
     return (
       <Tabs tabBarExtraContent={operations} className = "main-tabs">
-        <TabPane tab="Posts" key="1">Content of tab 1</TabPane>
+        <TabPane tab="Posts" key="1">
+          { this.getGalleryPanelContent() }
+        </TabPane>
         <TabPane tab="Map" key="2">Content of tab 2</TabPane>
       </Tabs>
     );
