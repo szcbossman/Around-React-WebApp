@@ -1,4 +1,5 @@
 import React from 'react'
+import { Spin } from 'antd';
 import { Tabs, Button } from 'antd';
 import { GEO_OPTIONS } from '../constants';
 
@@ -8,10 +9,11 @@ const operations = <Button>Extra Action</Button>;
 export class Home extends React.Component {
   state = {
     loadingGeoLocation : false,
+    error : '',
   }
 
   componentDidMount() {
-    this.setState({ loadingGeoLocation: true });
+    this.setState({ loadingGeoLocation: true, error: '' });
     this.getGeoLocation();
   }
   componenctWillUnmount() {
@@ -26,19 +28,27 @@ export class Home extends React.Component {
         GEO_OPTIONS,
       );
     } else {
-      /* geolocation IS NOT available */
+      this.setState({  error: 'Your browser does NOT support geoLocation!' });
     }
   }
 
   onSuccessLoadGeoLocation = (position) => {
-    this.setState({ loadingGeoLocation: false });
+    this.setState({ loadingGeoLocation: false, error: '' });
   }
   onFailedLoadGeoLocation = () => {
-    this.setState({ loadingGeoLocation: false });
+    this.setState({ loadingGeoLocation: false, error: 'Failed to load geoLocation!' });
   }
 
   getGalleryPanelContent = () => {
-    return this.state.loadingGeoLocation ? <span>loading geoLocation...</span> : null;
+    if (this.state.error) {
+      return <div>{ this.state.error }</div>
+    }
+    else if (this.state.loadingGeoLocation) {
+      return <Spin tip="Loading Location..."/>;
+    }
+    else {
+      return null;
+    }
   }
 
   render() {
