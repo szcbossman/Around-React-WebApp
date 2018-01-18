@@ -1,10 +1,37 @@
 import React from 'react'
 import { Tabs, Button } from 'antd';
+import { GEO_OPTIONS } from '../constants';
 
 const TabPane = Tabs.TabPane;
 const operations = <Button>Extra Action</Button>;
 
 export class Home extends React.Component {
+  componentDidMount() {
+    this.getGeoLocation();
+  }
+  componenctWillUnmount() {
+
+  }
+
+  getGeoLocation = () => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        this.onSuccessLoadGeoLocation,
+        this.onFailedLoadGeoLocation,
+        GEO_OPTIONS,
+      );
+    } else {
+      /* geolocation IS NOT available */
+    }
+  }
+
+  onSuccessLoadGeoLocation = (position) => {
+    console.log(position);
+  }
+  onFailedLoadGeoLocation = () => {
+
+  }
+
   render() {
     return (
       <Tabs tabBarExtraContent={operations} className = "main-tabs">
