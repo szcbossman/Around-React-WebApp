@@ -37,9 +37,15 @@ export class CreatePostButton extends React.Component {
           dataType: 'text',
 
         }).then(() => {
-          this.setState({ visible: false, confirmLoading: false });
-        }, () => {
-          this.setState({ visible: false, confirmLoading: false });
+          message.success('create post successfully!');
+          this.form.resetFields();
+        }, (error) => {
+          message.error(error.responseText);
+          this.form.resetFields();
+        }).then(() => {
+          this.props.loadNearbyPosts().then(() => {
+            this.setState({ visible: false, confirmLoading: false });
+          });
         }).catch(() => {
           message.error('create post failed!');
         });
