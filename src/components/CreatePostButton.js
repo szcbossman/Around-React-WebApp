@@ -4,7 +4,6 @@ import { WrappedCreatePostForm } from './CreateButtonForm'
 
 export class CreatePostButton extends React.Component {
   state = {
-    ModalText: 'Content of the modal',
     visible: false,
     confirmLoading: false,
   }
@@ -14,8 +13,12 @@ export class CreatePostButton extends React.Component {
     });
   }
   handleOk = () => {
+    this.form.validateFields((err, values) => {
+      if (!err) {
+        console.log(values);
+      }
+    });
     this.setState({
-      ModalText: 'The modal will be closed after two seconds',
       confirmLoading: true,
     });
     setTimeout(() => {
@@ -31,8 +34,11 @@ export class CreatePostButton extends React.Component {
       visible: false,
     });
   }
+  saveFormRef = (form) => {
+    this.form = form;
+  }
   render() {
-    const { visible, confirmLoading, ModalText } = this.state;
+    const { visible, confirmLoading } = this.state;
     return (
       <div>
         <Button type="primary" onClick={this.showModal}>Create New Posts</Button>
@@ -44,7 +50,7 @@ export class CreatePostButton extends React.Component {
                onCancel={this.handleCancel}
                cancelText="Cancel"
         >
-          <WrappedCreatePostForm/>
+          <WrappedCreatePostForm ref={this.saveFormRef}/>
         </Modal>
       </div>
     );
