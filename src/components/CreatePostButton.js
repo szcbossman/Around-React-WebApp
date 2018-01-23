@@ -1,6 +1,8 @@
 import React from 'react'
-import { Modal, Button } from 'antd'
+import $ from 'jquery';
+import { Modal, Button, message } from 'antd'
 import { WrappedCreatePostForm } from './CreateButtonForm'
+import { API_ROOT, POS_KEY, AUTH_PREFIX, TOKEN_KEY } from '../constants'
 
 export class CreatePostButton extends React.Component {
   state = {
@@ -16,6 +18,31 @@ export class CreatePostButton extends React.Component {
     this.form.validateFields((err, values) => {
       if (!err) {
         console.log(values);
+        const { lat, lon } = JSON.parse(localStorage.getItem(POS_KEY));
+        const formData = new FormData();
+        formData.set('lat', lat + Math.random() * 0.1 - 0.05);
+        formData.set('lon', lon + Math.random() * 0.1 - 0.05);
+        formData.set('message', values.message);
+        formData.set('image', values.image[0]);
+        this.setState({ confirmLoading: true });
+        $.ajax({
+          url: `${API_ROOT}/post`,
+          method: 'POST',
+          data: formData,
+          headers: {
+            Authorization: `${AUTH_PREFIX} ${localStorage.getItem(TOKEN_KEY)}`,
+          },
+          processData: false,
+          contentType: false,
+          dataType: 'text',
+
+        }).then(() => {
+          this.setState({ visible: false, confirmLoading: false });
+        }, () => {
+          this.setState({ visible: false, confirmLoading: false });
+        }).catch(() => {
+          message.error('create post failed!');
+        });
       }
     });
     this.setState({
