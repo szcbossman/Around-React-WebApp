@@ -14,10 +14,14 @@ export class AroundMarker extends React.Component {
     return (
       <Marker
         position={{ lat: this.props.post.location.lat, lng: this.props.post.location.lon }}
-        onClick={this.onToggleOpen}
+        onMouseOver={this.onToggleOpen}
+        onMouseOut={this.onToggleOpen}
       >
         {this.state.isOpen ? <InfoWindow onCloseClick={this.onToggleOpen}>
-          <div>test text</div>
+          <div>
+            <img className="around-marker-image" src={this.props.post.url} alt="postImage" />
+            <p>{`${this.props.post.user}: ${this.props.post.message}`}</p>
+          </div>
         </InfoWindow> : null}
       </Marker>
     );
