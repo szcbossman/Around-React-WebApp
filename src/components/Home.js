@@ -82,7 +82,7 @@ export class Home extends React.Component {
     //const lon = -122.3937977;
     this.setState({ loadingPosts: true });
     return $.ajax({
-      url: `${API_ROOT}/search?lat=${lat}&lon=${lon}&range=60`,
+      url: `${API_ROOT}/search?lat=${lat}&lon=${lon}&range=50`,
       method: 'GET',
       headers: {
         Authorization: `${AUTH_PREFIX} ${localStorage.getItem(TOKEN_KEY)}`
